@@ -2,7 +2,7 @@
 
 List the URL addresses to download the documentation in epub, pdf or mobi format of book projects hosted by GitBooks.com, using the GitBooks API's client-library in Go.
 
-This client is somehow similar to the [API_ReadTheDocs](https://github.com/je-nunez/API_ReadTheDocs) which lists (and downloads) books hosted by [ReadTheDocs.org](https://ReadTheDocs.org/), but in this case, for [GitBook.com](https://www.gitbook.com/).
+This client is somehow similar to the [API_ReadTheDocs project](https://github.com/je-nunez/API_ReadTheDocs) which lists (and downloads) books hosted by [ReadTheDocs.org](https://ReadTheDocs.org/), but in this case, for [GitBook.com](https://www.gitbook.com/).
 
 # WIP
 
@@ -34,24 +34,24 @@ This project is in GoLang and requires the [GitBook API Go client library](https
 
 1. [Install GoLang for your architecture](https://golang.org/doc/install)
 
-2. Set the GOPATH to the base directory where you downloaded this project (or another subdirectory):
+2. Set the `GOPATH` environment variable to the base directory where you downloaded this project (or another subdirectory):
 
-      GOPATH=<put/here/base/directory/of/git/clone/of/this/project>
-      export GOPATH
+       GOPATH=<put/here/base/directory/of/git/clone/of/this/project>
+       export GOPATH
 
 3. Install the GitBook API Go client library:
 
-      go get github.com/GitbookIO/go-gitbook-api
+       go get github.com/GitbookIO/go-gitbook-api
 
 4. For further installing the compiled executable, set the `GOBIN` to the proper directory where to write the executable. As a very simple example:
 
-      GOBIN="$GOPATH/bin"
-      export GOBIN
+       GOBIN="$GOPATH/bin"
+       export GOBIN
 
 5. Compile the source code:
 
-      go build src/api_client_gitbook.go
-      go install src/api_client_gitbook.go
+       go build src/api_client_gitbook.go
+       go install src/api_client_gitbook.go
 
 # Inspiration
 
