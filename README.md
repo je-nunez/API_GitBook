@@ -36,22 +36,22 @@ This project is in GoLang and requires the [GitBook API Go client library](https
 
 2. Set the `GOPATH` environment variable to the base directory where you downloaded this project (or another subdirectory):
 
-       GOPATH=<put/here/base/directory/of/git/clone/of/this/project>
-       export GOPATH
+         GOPATH=<put/here/base/directory/of/git/clone/of/this/project>
+         export GOPATH
 
 3. Install the GitBook API Go client library:
 
-       go get github.com/GitbookIO/go-gitbook-api
+         go get github.com/GitbookIO/go-gitbook-api
 
 4. For further installing the compiled executable, set the `GOBIN` to the proper directory where to write the executable. As a very simple example:
 
-       GOBIN="$GOPATH/bin"
-       export GOBIN
+         GOBIN="$GOPATH/bin"
+         export GOBIN
 
 5. Compile the source code:
 
-       go build src/api_client_gitbook.go
-       go install src/api_client_gitbook.go
+         go build src/api_client_gitbook.go
+         go install src/api_client_gitbook.go
 
 # Inspiration
 
