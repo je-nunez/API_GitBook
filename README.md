@@ -10,7 +10,7 @@ This is the very first draft, which is a *work in progress*. The implementation 
 
 # How to Use it
 
-After you have [compiled the source code](#-How-to-Compile), you may need to setup your [GitBook account](https://www.gitbook.com/) to authenticate (some books require this). (**Note**: the GitBook account is **not** the same as the GitHub account, so far, and you may need to create your free GitBook account.)
+After you have [compiled the source code](#how-to-compile), you may need to setup your [GitBook account](https://www.gitbook.com/) to authenticate (some books require this). (**Note**: the GitBook account is **not** the same as the GitHub account, so far, and you may need to create your free GitBook account.)
 
       # some books require this
       export GITBOOK_USER=<your-gitbook-username>
@@ -18,15 +18,19 @@ After you have [compiled the source code](#-How-to-Compile), you may need to set
 
 Call the client program:
 
-      ./api_client_gitbook -author "<put-author-here>" -book "<put-book-entry-here>"
+      ./api_client_gitbook -author "<put-author-here>" [-book "<put-optional-book-entry-here>"]
+
+The `-book "<put-optional-book-entry-here>"` is optional: if omitted, this client will report all books written in GitBook by the given author.
 
 For example:
 
       ./api_client_gitbook -author 0xax -book linux-insides
-      
+       
       ./api_client_gitbook -author unbug -book react-native-training
-      
-      ./api_client_gitbook -author wxdublin -book mesos-code-walk
+       
+      # to report all books written by a given author, for example:
+       
+      ./api_client_gitbook -author wxdublin
 
 # How to Compile
 
