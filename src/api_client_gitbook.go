@@ -45,9 +45,15 @@ func createGitBookAPIObj() *gitbook.API {
 	return api
 }
 
+func reportErrorFromGitBook(errMsgPreffix string, errCode error) {
+	fmt.Fprintf(os.Stderr, "Error: %s: %q. "+
+		"You might need to verify the values of your GITBOOK_USER and GITBOOK_PASSWD environment variables.\n",
+		errMsgPreffix, errCode)
+}
+
 func reportGitBooksOfAuthor(gitbookApi *gitbook.API, gitbookAuthor string) {
 
-	fmt.Fprintf(os.Stderr, "Looking for all books written by author %q\n",
+	fmt.Fprintf(os.Stderr, "Looking up for all books written by author %q...\n",
 		gitbookAuthor)
 
 	// The GitBook client library in Go doesn't seem to have the option to
@@ -81,8 +87,7 @@ func reportGitBooksOfAuthor(gitbookApi *gitbook.API, gitbookAuthor string) {
 	)
 
 	if errRequest != nil {
-		fmt.Fprintf(os.Stderr, "Error querying the GitBook API for author: %q\n",
-			errRequest)
+		reportErrorFromGitBook("querying the GitBook API for author", errRequest)
 	} else {
 		// fmt.Printf("Raw JSON for Books = %s\n", string(books.List))
 
@@ -97,9 +102,9 @@ func reportGitBooksOfAuthor(gitbookApi *gitbook.API, gitbookAuthor string) {
 	}
 }
 
-func reportGitBook(gitbookApi *gitbook.API, author string, bookName string) {
+func reportGitBook(gitbookApi *gitbook.API, author string, bookName string, dumpJson bool) {
 
-	fmt.Fprintf(os.Stderr, "Looking for book %q written by author %q\n",
+	fmt.Fprintf(os.Stderr, "Looking up for book %q written by author %q...\n",
 		bookName, author)
 
 	book, err := gitbookApi.Book.Get(author + "/" + bookName)
@@ -108,21 +113,23 @@ func reportGitBook(gitbookApi *gitbook.API, author string, bookName string) {
 	if err == nil {
 		// No error retrieving the book information from the GitBook API
 
-		// Try to print the entire JSON results of the GitBook metadata
-		bookPrettyPr, errMarsh := json.MarshalIndent(book, "", "  ")
-		if errMarsh == nil {
-			fmt.Printf("Book metadata = %s\n", bookPrettyPr)
+		if dumpJson {
+			// Try to print the entire JSON results of the GitBook metadata
+			bookPrettyPr, errMarsh := json.MarshalIndent(book, "", "  ")
+			if errMarsh == nil {
+				fmt.Printf("Book full metadata = %s\n", bookPrettyPr)
+			} else {
+				fmt.Fprintln(os.Stderr, "Error in book's JSON response: ", errMarsh)
+			}
 		} else {
-			fmt.Fprintln(os.Stderr, "Error in book's JSON response: ", errMarsh)
+			// Print directly the download links for the book in GitBook in EPUB, PDF, and
+			// Mobi document formats
+			fmt.Printf("EPUB=%s\n", book.Urls.Download.Epub)
+			fmt.Printf("PDF=%s\n", book.Urls.Download.Pdf)
+			fmt.Printf("Mobi=%s\n", book.Urls.Download.Mobi)
 		}
-
-		// Print directly the download links for the book in GitBook in EPUB, PDF, and
-		// Mobi document formats
-		fmt.Printf("EPUB=%s\n", book.Urls.Download.Epub)
-		fmt.Printf("PDF=%s\n", book.Urls.Download.Pdf)
-		fmt.Printf("Mobi=%s\n", book.Urls.Download.Mobi)
 	} else {
-		fmt.Fprintf(os.Stderr, "Error querying the GitBook API for book: %q\n", err)
+		reportErrorFromGitBook("querying the GitBook API for book", err)
 	}
 }
 
@@ -130,11 +137,14 @@ func main() {
 
 	var gitbookAuthor string
 	var gitbookBook string
+	var dumpAllResults bool
 
 	flag.StringVar(&gitbookAuthor, "author", "",
 		"The GitBook account which authored the book.")
 	flag.StringVar(&gitbookBook, "book", "",
 		"The name of the GitBook book belonging to that author.")
+	flag.BoolVar(&dumpAllResults, "dump", false,
+		"Dump all details of the GitBook book besides URLs to download book. (default: false)")
 	flag.Parse()
 
 	if gitbookAuthor == "" {
@@ -146,7 +156,7 @@ func main() {
 	api := createGitBookAPIObj()
 
 	if gitbookBook != "" {
-		reportGitBook(api, gitbookAuthor, gitbookBook)
+		reportGitBook(api, gitbookAuthor, gitbookBook, dumpAllResults)
 	} else {
 		// only the GitBook author was given, without a specific book:
 		// report all the books written by the given author

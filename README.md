@@ -18,15 +18,23 @@ After you have [compiled the source code](#how-to-compile), you may need to setu
 
 Call the client program:
 
-      ./api_client_gitbook -author "<put-author-here>" [-book "<put-optional-book-entry-here>"]
+      ./api_client_gitbook -author "<put-author-here>" [-book "<put-optional-book-entry-here>"] [-dump]
 
-The `-book "<put-optional-book-entry-here>"` is optional: if omitted, this client will report all books written in GitBook by the given author.
+The `-book "<put-optional-book-entry-here>"` is optional: if omitted, this client will report all books written in GitBook by the given author. The `-dump` option means to dump all the metadata about the book that GitBook has, including the date and time of its latest update (or build), etc.
 
 For example:
 
       ./api_client_gitbook -author 0xax -book linux-insides
+            Looking up for book "linux-insides" written by author "0xax"...
+            EPUB=https://www.gitbook.com/download/epub/book/0xax/linux-insides
+            PDF=https://www.gitbook.com/download/pdf/book/0xax/linux-insides
+            Mobi=https://www.gitbook.com/download/mobi/book/0xax/linux-insides
        
       ./api_client_gitbook -author unbug -book react-native-training
+            Looking up for book "react-native-training" written by author "unbug"...
+            EPUB=https://www.gitbook.com/download/epub/book/unbug/react-native-training
+            PDF=https://www.gitbook.com/download/pdf/book/unbug/react-native-training
+            Mobi=https://www.gitbook.com/download/mobi/book/unbug/react-native-training
        
       # to report all books written by a given author, for example:
        
